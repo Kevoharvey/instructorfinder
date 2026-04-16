@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instructor Schedule Finder</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+    h1 { text-align: center; }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 8px;
+      border: none;
+    }
+    input {
+      width: 250px;
+    }
+    button {
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+    }
+    .card {
+      background: #1e293b;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📚 Instructor Schedule Finder</h1>
+
+<!-- SEARCH -->
+<input type="text" id="searchInput" placeholder="Search by name or day...">
+<button onclick="search()">Search</button>
+
+<!-- ADD NEW -->
+<h3>➕ Add Instructor</h3>
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="days" placeholder="Days (e.g. Sun, Mon)">
+<button onclick="addInstructor()">Add</button>
+
+<!-- RESULTS -->
+<h3>🔍 Results</h3>
+<div id="results"></div>
+
+<script>
+// Default Data
+let defaultData = [
+  {name:"Ahmed Nader", days:"Sun"},
+  {name:"Ahmed Taha", days:"Sun, Mon, Tue, Wed"},
+  {name:"Dr. Ahmed Hazem", days:"Sun, Mon, Tue, Wed"},
+  {name:"Dr. Ahmed Ibrahim", days:"Sun, Mon, Tue"},
+  {name:"Dr. Ahmed Ragab", days:"Sun, Mon, Tue"},
+  {name:"Dr. Amir", days:"Sat, Sun"},
+  {name:"Prof. Abderazek Bedir", days:"Sat, Sun, Mon, Tue"},
+  {name:"Prof. Adel Sorour", days:"Sun, Mon"},
+  {name:"Dr. Hamdy Hassanein", days:"Sun, Mon, Tue"},
+  {name:"Prof. Hamdy El-Desouky", days:"Sun, Mon, Tue"},
+  {name:"Hanaa Moussa", days:"Sun, Mon, Tue, Wed"},
+  {name:"Dr. Hisham Nabil", days:"Sat, Sun"},
+  {name:"Dr. Ibrahim Gamal", days:"Sat, Sun"},
+  {name:"Prof. Ibrahim Badr", days:"Sun, Mon, Tue"},
+  {name:"Dr. Islam Elbaz", days:"Sat, Sun, Mon, Tue"},
+  {name:"Dr. Mohamed Hamam", days:"Tue, Wed"},
+  {name:"Dr. Mohamed Hassan", days:"Wed, Thu"},
+  {name:"Prof. Mohamed Saada", days:"Sun, Wed"},
+  {name:"Dr. Mohamed Saad", days:"Sun, Tue, Wed"},
+  {name:"Mohamed Anwar", days:"Sun, Mon"},
+  {name:"Dr. Mohamed M. Alsuyuti", days:"Sat, Sun"},
+  {name:"Dr. Mohamed Taha", days:"Sun, Wed"},
+  {name:"Dr. Mostafa Elsayed", days:"Sat, Sun, Wed"},
+  {name:"Prof. Mahmoud Abdelsadek", days:"Sat, Sun, Mon, Wed"},
+  {name:"Prof. Radwa Hassan", days:"Sun, Mon, Tue, Wed"},
+  {name:"Prof. Reem Hamdy", days:"Sat, Sun, Tue"},
+  {name:"Dr. Sayed Badr", days:"Sun, Mon, Tue, Wed"},
+  {name:"Dr. Shabaan Ibrahim", days:"Sun, Mon, Tue"},
+  {name:"Sameh Basha", days:"Sun, Mon, Tue, Wed"},
+  {name:"Prof. Taha Mattar", days:"Sun, Mon, Tue"},
+  {name:"Dr. Zakaria", days:"Sat, Sun"}
+];
+
+// Load DB
+let db = JSON.parse(localStorage.getItem("instructors")) || defaultData;
+
+// Save DB
+function saveDB() {
+  localStorage.setItem("instructors", JSON.stringify(db));
+}
+
+// Display Results
+function display(list) {
+  let results = document.getElementById("results");
+  results.innerHTML = "";
+
+  list.forEach(item => {
+    results.innerHTML += `
+      <div class="card">
+        <strong>${item.name}</strong><br>
+        📅 ${item.days}
+      </div>
+    `;
+  });
+}
+
+// Search Function
+function search() {
+  let query = document.getElementById("searchInput").value.toLowerCase();
+
+  let filtered = db.filter(item =>
+    item.name.toLowerCase().includes(query) ||
+    item.days.toLowerCase().includes(query)
+  );
+
+  display(filtered);
+}
+
+// Add Instructor
+function addInstructor() {
+  let name = document.getElementById("name").value;
+  let days = document.getElementById("days").value;
+
+  if (!name || !days) {
+    alert("Enter both name and days 😤");
+    return;
+  }
+
+  db.push({name, days});
+  saveDB();
+  display(db);
+
+  document.getElementById("name").value = "";
+  document.getElementById("days").value = "";
+}
+
+// Initial Load
+display(db);
+</script>
+
+</body>
+</html>
