@@ -52,6 +52,12 @@
 <div id="results"></div>
 
 <script>
+
+// 🔤 SORT FUNCTION
+function sortList(list) {
+  return list.sort((a, b) => a.name.localeCompare(b.name));
+}
+
 // Default Data
 let defaultData = [
   {name:"Ahmed Nader", days:"Sun"},
@@ -82,14 +88,15 @@ let defaultData = [
   {name:"Prof. Reem Hamdy", days:"Sat, Sun, Tue"},
   {name:"Dr. Sayed Badr", days:"Sun, Mon, Tue, Wed"},
   {name:"Dr. Shabaan Ibrahim", days:"Sun, Mon, Tue"},
-  {name:" Dr. Sameh Basha", days:"Sun, Mon, Tue, Wed"},
+  {name:"Dr. Sameh Basha", days:"Sun, Mon, Tue, Wed"},
   {name:"Prof. Taha Mattar", days:"Sun, Mon, Tue"},
-  {name:"Dr. Zakaria", days:"Sat, Sun"}
+  {name:"Dr. Zakaria", days:"Sat, Sun"},
   {name:"Dr. Hatem Farouk", days:"Sun"}
 ];
 
 // Load DB
 let db = JSON.parse(localStorage.getItem("instructors")) || defaultData;
+db = sortList(db);
 
 // Save DB
 function saveDB() {
@@ -98,6 +105,8 @@ function saveDB() {
 
 // Display Results
 function display(list) {
+  list = sortList(list);
+
   let results = document.getElementById("results");
   results.innerHTML = "";
 
@@ -134,6 +143,7 @@ function addInstructor() {
   }
 
   db.push({name, days});
+  db = sortList(db);
   saveDB();
   display(db);
 
@@ -143,6 +153,7 @@ function addInstructor() {
 
 // Initial Load
 display(db);
+
 </script>
 
 </body>
